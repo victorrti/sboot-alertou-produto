@@ -1,0 +1,94 @@
+openapi: 3.0.1
+info:
+  title: Produto API
+  version: 1.0.0
+  description: API para cadastro, listagem e edição de produtos
+
+paths:
+  /produtos:
+    post:
+      summary: Criar produto
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProdutoDto'
+      responses:
+        '200':
+          description: Produto criado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReturnMessageProduto'
+        '400':
+            description: Requisição inválida
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ErrorResponseDto'
+        '403':
+          description: Acesso negado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+        '401':
+          description: Não autorizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+        '404':
+          description: Recurso não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+        '500':
+          description: Erro interno do sistema
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+components:
+  schemas:
+    ProdutoDto:
+      type: object
+      properties:
+        nome:
+          type: string
+          example: Smartphone
+        descricao:
+          type: string
+          example: Modelo Galaxy S23 com 128GB
+        preco:
+          type: number
+          format: double
+          example: 1999.99
+    ErrorResponseDto:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Requisição inválida"
+        httpStatus:
+          type: string
+          example: "BAD_REQUEST"
+        statusCode:
+          type: integer
+          example: 400
+    ReturnMessageProduto:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Produto criado com sucesso"
+        httpStatus:
+          type: string
+          example: "CREATED"
+        data:
+          $ref: '#/components/schemas/ProdutoDto'
+        statusValue:
+          type: integer
+          example: 201
