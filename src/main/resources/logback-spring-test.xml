@@ -1,0 +1,52 @@
+<configuration scan="true">
+
+    <!-- Logstash Appender (envia via TCP) -->
+    <appender name="LOGSTASH" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+        <destination>localhost:5000</destination> <!-- Altere para IP real se não for local -->
+        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+            <providers>
+                <timestamp>
+                    <timeZone>America/Sao_Paulo</timeZone>
+                </timestamp>
+                <loggerName/>
+                <logLevel/>
+                <threadName/>
+                <mdc/>
+                <message/>
+                <stackTrace/>
+            </providers>
+        </encoder>
+        <keepAliveDuration>5 minutes</keepAliveDuration>
+        <reconnectionDelay>10000</reconnectionDelay>
+    </appender>
+
+    <!-- Async Logstash (para performance) -->
+    <appender name="ASYNC_LOGSTASH" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="LOGSTASH"/>
+        <queueSize>2048</queueSize>
+        <discardingThreshold>0</discardingThreshold>
+        <neverBlock>true</neverBlock>
+    </appender>
+
+    <!-- Console JSON também -->
+    <appender name="TEST_CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+            <providers>
+                <timestamp />
+                <loggerName />
+                <logLevel />
+                <threadName />
+                <mdc />
+                <message />
+                <stackTrace />
+            </providers>
+        </encoder>
+    </appender>
+
+    <!-- Nível padrão para o ambiente de teste -->
+    <root level="INFO">
+        <appender-ref ref="ASYNC_LOGSTASH"/>
+        <appender-ref ref="TEST_CONSOLE"/>
+    </root>
+
+</configuration>

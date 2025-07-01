@@ -1,6 +1,7 @@
 package com.alertou.sboot_atom_produto.security;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -19,16 +20,17 @@ import java.util.Arrays;
 
 @Configuration
 @EnableMethodSecurity
-@RequiredArgsConstructor
 public class SecurityConfig {
-    private final SecurityFilter securityFilter;
+    @Autowired
+    private  SecurityFilter securityFilter;
     private static final String[] AUTH_SWAGGER_LIST = {
             "/swagger-ui.html",
             "/v3/api-docs/**",
             "/api-docs/**",
             "/swagger-ui/**",
-            "/v2/api-docs/**",
-            "/swagger-resources/**"
+            "/docs/**",
+            "/swagger-resources/**",
+            "/swagger-ui/index.html"
     };
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http)throws Exception{

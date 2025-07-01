@@ -1,0 +1,13 @@
+<configuration scan="true">
+    <include resource="org/springframework/boot/logging/logback/base.xml"/>
+
+    <appender name="DEV_CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <root level="DEBUG">
+        <appender-ref ref="DEV_CONSOLE"/>
+    </root>
+</configuration>

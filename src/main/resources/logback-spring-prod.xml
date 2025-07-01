@@ -1,0 +1,46 @@
+<configuration scan="true">
+    <appender name="LOGSTASH" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+        <destination>localhost:5000</destination> <!-- ou IP do Logstash em produção -->
+        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+            <providers>
+                <timestamp>
+                    <timeZone>UTC</timeZone>
+                </timestamp>
+                <loggerName/>
+                <logLevel/>
+                <threadName/>
+                <mdc/>
+                <message/>
+                <stackTrace/>
+            </providers>
+        </encoder>
+        <keepAliveDuration>5 minutes</keepAliveDuration>
+        <reconnectionDelay>10000</reconnectionDelay>
+    </appender>
+
+    <appender name="ASYNC_LOGSTASH" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="LOGSTASH"/>
+        <queueSize>5120</queueSize>
+        <discardingThreshold>0</discardingThreshold>
+        <neverBlock>true</neverBlock>
+    </appender>
+
+    <appender name="PROD_CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+            <providers>
+                <timestamp />
+                <loggerName />
+                <logLevel />
+                <threadName />
+                <mdc />
+                <message />
+                <stackTrace />
+            </providers>
+        </encoder>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="ASYNC_LOGSTASH"/>
+        <appender-ref ref="PROD_CONSOLE"/>
+    </root>
+</configuration>
